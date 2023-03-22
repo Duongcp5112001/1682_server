@@ -53,7 +53,7 @@ const groupSchema = new mongoose.Schema({
     updatedBy: {
         type: mongoose.Types.ObjectId,
         required: true,
-        ref: "user",
+        ref: "member",
     },
 }, {
     timestamps: true
