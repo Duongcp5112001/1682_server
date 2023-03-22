@@ -10,7 +10,7 @@ const USER_STATUS = {
 }
 
 const USER_ROLE = {
-    STAFF: "USER",
+    USER: "USER",
     ADMIN: "ADMIN",
 }
 
@@ -44,12 +44,7 @@ const userSchema = new mongoose.Schema({
     status: {
         type: USER_STATUS,
         required: true,
-        default: USER_STATUS.INACTIVE,
-    },
-    code: {
-        type: String,
-        required: true,
-        default: {},
+        default: USER_STATUS.ACTIVE,
     },
     codeExpires: {
         type: Date,
@@ -59,7 +54,7 @@ const userSchema = new mongoose.Schema({
     role: {
         type: USER_ROLE,
         required: true,
-        default: USER_ROLE.STAFF,
+        default: USER_ROLE.USER,
     },
     createdAt: {
         type: Date,
