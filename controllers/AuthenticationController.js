@@ -1,29 +1,26 @@
-const User = require('../models/User')
+const Member = require('../models/Member')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const AuthenticationController = {
     register: async (req, res) => {
         try {
-            const { nickname, email, password } = req.body
+            const { username, password } = req.body
 
-            const user_name = await User.findOne({nickname})
-            if(user_name) return res.status(400).json({msg: "This user name already exists."})
-
-            const user_email = await User.findOne({email})
-            if(user_email) return res.status(400).json({msg: "This email already exists."})
+            const member_name = await Member.findOne({username})
+            if(member_name) return res.status(400).json({msg: "This user name already exists."})
 
             if(password.length < 8)
             return res.status(400).json({msg: "Password must be at least 8 characters."})
 
             const passwordHass = await bcrypt.hash(password,12)
 
-            const newUser = new User({
-                nickname, email, password:passwordHass,
+            const newMember = new Member({
+                username, password:passwordHass,
             })
 
-            const access_token = createAccessToken({id: newUser._id})
-            const refresh_token = createRefreshToken({id: newUser._id}) 
+            const access_token = createAccessToken({id: newMember._id})
+            const refresh_token = createRefreshToken({id: newMember._id}) 
             
             res.cookie('refreshtoken', refresh_token, {
                 httpOnly: true,
@@ -31,38 +28,35 @@ const AuthenticationController = {
                 maxAge: 30*24*60*60*1000 
             })
 
-            await newUser.save()
+            await newMember.save()
 
             res.json({
                 msg: "Register Success!",
                 access_token,
-                user: {
-                    ...newUser._doc,
+                member: {
+                    ...newMember._doc,
                     password:'',
                 }
             })
-
-            console.log(newUser)
-
         } catch (error) {
             return res.status(500).json({msg: error.message});
         }
     },
     login: async (req, res) => {
         try {
-            const { email, password } = req.body
+            const { username, password } = req.body
   
-            if(!email) return res.status(404).json({msg: "Email is require."})
-            const user = await User.findOne({email}).populate("-password")
-            if (!user) return res.status(404).json({msg: "This email dose not exist."})
+            if(!username) return res.status(404).json({msg: "Email is require."})
+            const member = await Member.findOne({username}).populate("-password")
+            if (!member) return res.status(404).json({msg: "This email dose not exist."})
 
             if(!password) return res.status(404).json({msg: "Password is require."})
-            const comparePassword = await bcrypt.compare(password, user.password)
+            const comparePassword = await bcrypt.compare(password, member.password)
             if (!comparePassword) return res.status(404).json({msg: "Password is incorrect"})
 
 
-            const access_token = createAccessToken({id: user._id})
-            const refresh_token = createRefreshToken({id: user._id}) 
+            const access_token = createAccessToken({id: member._id})
+            const refresh_token = createRefreshToken({id: member._id}) 
             
             res.cookie('refreshtoken', refresh_token, {
                 httpOnly: true,
@@ -73,8 +67,8 @@ const AuthenticationController = {
             res.json({
                 msg: "Login Success!",
                 access_token,
-                user: {
-                    ...user._doc,
+                member: {
+                    ...member._doc,
                     password:'',
                 }
             })
@@ -95,7 +89,7 @@ const AuthenticationController = {
             const ref_token = req.cookies.refreshtoken
             if(!ref_token) return res.status(404).json({msg: "Please login first."})
             
-            jwt.verify(token, process.env.RANDOM_REFRESH_TOKEN, async (err, result) => {
+            jwt.verify(ref_token, process.env.RANDOM_REFRESH_TOKEN, async (err, result) => {
                if(err) return res.status(404).json({msg: "Please login first."})
                console.log(result)
             })

@@ -2,30 +2,24 @@ const GROUP_COLLECTION_NAME = require('./Group')
 
 const mongoose = require('mongoose')
 
-const USER_COLLECTION_NAME = "user";
+const MEMBER_COLLECTION_NAME = "member";
 
-const USER_STATUS = {
+const MEMBER_STATUS = {
     ACTIVE: "ACTIVE",
     INACTIVE: "INACTIVE",
 }
 
-const USER_ROLE = {
-    USER: "USER",
+const MEMBER_ROLE = {
+    MEMBER: "MEMBER",
     ADMIN: "ADMIN",
 }
 
-const userSchema = new mongoose.Schema({
-    nickname: {
+const memberSchema = new mongoose.Schema({
+    username: {
         type: String,
         required: true,
         trim: true,
         maxLength: 30,
-        unique: true
-    },
-    email: {
-        type: String,
-        required: true,
-        trim: true,
         unique: true
     },
     password: {
@@ -42,9 +36,9 @@ const userSchema = new mongoose.Schema({
         default: "",
     },
     status: {
-        type: USER_STATUS,
+        type: MEMBER_STATUS,
         required: true,
-        default: USER_STATUS.ACTIVE,
+        default: MEMBER_STATUS.ACTIVE,
     },
     codeExpires: {
         type: Date,
@@ -52,9 +46,9 @@ const userSchema = new mongoose.Schema({
         default: new Date(),
     },
     role: {
-        type: USER_ROLE,
+        type: MEMBER_ROLE,
         required: true,
-        default: USER_ROLE.USER,
+        default: MEMBER_ROLE.MEMBER,
     },
     createdAt: {
         type: Date,
@@ -73,4 +67,4 @@ const userSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model(USER_COLLECTION_NAME, userSchema)
+module.exports = mongoose.model(MEMBER_COLLECTION_NAME, memberSchema)
