@@ -18,7 +18,8 @@
     "express-validator": "^6.13.0",
     "inversify": "^6.0.1",
     "jsonwebtoken": "^9.0.0",
-    "mongoose": "^5.13.13"
+    "mongoose": "^5.13.13",
+    "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
     "nodemon": "^2.0.21"
