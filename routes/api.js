@@ -1,8 +1,9 @@
 const router = require('express').Router();
-const AuthenticationController = require('../controllers/AuthenticationController');
 const verifyToken = require('../middleware/authorization');
-const MemberController = require('../controllers/MemberController')
-const UserController = require('../controllers/UserController')
+const AuthenticationController = require('../controllers/AuthenticationController');
+const MemberController = require('../controllers/MemberController');
+const UserController = require('../controllers/UserController');
+const ParamsValidations = require('../middleware/ParamsValidation');
 
 //Auth
 router.post('/register',AuthenticationController.register);
@@ -19,8 +20,17 @@ router.post('/refresh_token', AuthenticationController.generateAccessToken);
 
 
 //Member
-router.get('/member/get-profile', verifyToken, MemberController.getProfile);
-
+router.get(
+    '/member/get-profile', 
+    verifyToken, 
+    MemberController.getProfile
+);
+router.put(
+    '/member/:memberId/change-password',
+    verifyToken,
+    MemberController.changePassword
+    )
+    
 //User
 router.get('/user/get-profile', verifyToken, UserController.getProfile);
 
