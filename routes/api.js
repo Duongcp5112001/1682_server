@@ -23,17 +23,11 @@ router.get(
     '/member/get-profile', 
     verifyToken, 
     MemberController.getProfile
-);
+    );
 router.put(
     '/member/:memberId/change-password',
     verifyToken,
     MemberController.changePassword
-<<<<<<< Updated upstream
-    )
-    
-//User
-router.get('/user/get-profile', verifyToken, UserController.getProfile);
-=======
     );
 router.put(
     '/member/:memberId/update-profile',
@@ -52,6 +46,5 @@ router.put(
     verifyToken,
     UserController.updateProfile
     );
->>>>>>> Stashed changes
 
 module.exports = router
