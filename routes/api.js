@@ -5,7 +5,6 @@ const MemberController = require('../controllers/MemberController');
 const UserController = require('../controllers/UserController');
 const ParamsValidations = require('../middleware/ParamsValidation');
 
-
 //Auth
 router.post('/register',AuthenticationController.register);
 
@@ -31,7 +30,7 @@ router.put(
     verifyToken,
     MemberController.changePassword
     )
-
+    
 //User
 router.get('/user/get-profile', verifyToken, UserController.getProfile);
 
