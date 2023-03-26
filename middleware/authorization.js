@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const NextFunction = require("express")
-const MEMBER_ROLE = require("../models/Member")
+const Member = require("../models/Member")
+
 
 async function verifyToken(req, res, NextFunction) {
   const token = req.header('Authorization').split(" ")[1];
@@ -24,9 +25,10 @@ async function checkMember(req, res, NextFunction) {
 
   try {
     const decode = jwt.verify(token, process.env.RANDOM_TOKEN_SECRET);
-    req.decodedId = decode.id;
-    const member = await Member.findOne(decodedId);
-    if (member.role === MEMBER_ROLE.MEMBER) {
+    const decodedId = decode.id;
+
+    const member = await Member.findById(decodedId);
+    if (member.role === "MEMBER") {
       NextFunction();
     } else {
       return res.status(14).json({msg: "Required member permission"});
@@ -45,9 +47,9 @@ async function checkAdmin(req, res, NextFunction) {
 
   try {
     const decode = jwt.verify(token, process.env.RANDOM_TOKEN_SECRET);
-    req.decodedId = decode.id;
-    const admin = await Member.findOne(decodedId);
-    if (admin.role === MEMBER_ROLE.ADMIN) {
+    const decodedId = decode.id;
+    const admin = await Member.findById(decodedId);
+    if (admin.role === "ADMIN") {
       NextFunction();
     } else {
       return res.status(14).json({msg: "Required admin permission"});
@@ -59,4 +61,4 @@ async function checkAdmin(req, res, NextFunction) {
   }
 }
 
-module.exports = verifyToken
+module.exports = { verifyToken, checkAdmin, checkMember }
