@@ -1,0 +1,15 @@
+user not found - 01
+username require - 02
+member not found - 03
+old password require-  04
+new password require - 05
+password not compared - 06
+This username already exists - 07
+Password must be at least 8 characters - 08
+username not found - 09
+Password is require - 10
+Password is incorrect - 11
+login first - 12
+Authorization forbidden - 13
+Required member permission - 14
+Required admin permission - 15

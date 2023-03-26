@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const GROUP_COLLECTION_NAME = "group";
 
-const DEPARTMENT_STATUS = {
+const GROUP_STATUS = {
     ACTIVE: "ACTIVE",
     INACTIVE: "INACTIVE",
 }
@@ -33,9 +33,9 @@ const groupSchema = new mongoose.Schema({
     },
 
     status: {
-        type: DEPARTMENT_STATUS,
+        type: GROUP_STATUS,
         required: true,
-        default: DEPARTMENT_STATUS.ACTIVE,
+        default: GROUP_STATUS.ACTIVE,
     },
 
     createdAt: {

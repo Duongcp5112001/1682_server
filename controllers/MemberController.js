@@ -8,7 +8,7 @@ const MemberController = {
             const memberId = req.decodedId;
             const memberFound = await Member.findById(memberId);
             if (!memberFound) {
-                return res.status(01).json({msg: 'Member not found'})
+                return res.status(03).json({msg: 'Member not found'})
             }
 
             return res.json({
@@ -37,13 +37,13 @@ const MemberController = {
             const memberFound = await Member.findById(memberId)
 
             if (!memberFound) {
-                return res.status(01).json({msg: 'Member not found'})
+                return res.status(03).json({msg: 'Member not found'})
             }
 
-            if(!oldPassword) return res.status(404).json({msg: "Old password is require."})
-            if(!newPassword) return res.status(404).json({msg: "New password is require."})
+            if(!oldPassword) return res.status(04).json({msg: "Old password is require."})
+            if(!newPassword) return res.status(05).json({msg: "New password is require."})
             const comparePassword = await bcrypt.compare(oldPassword, memberFound.password);
-            if (!comparePassword) return res.status(404).json({msg: "Password is incorrect"})
+            if (!comparePassword) return res.status(06).json({msg: "Old password is not correct"})
 
             const password = await bcrypt.hash(newPassword, 10);
 
@@ -79,10 +79,10 @@ const MemberController = {
             const memberFound = await Member.findById(memberId)
 
             if (!memberFound) {
-                return res.status(01).json({msg: 'Member not found'})
+                return res.status(03).json({msg: 'Member not found'})
             }
 
-            if(!memberNameUpdate) return res.status(404).json({msg: "Username is require."})
+            if(!memberNameUpdate) return res.status(02).json({msg: "Username is require."})
 
             const updateMember = await Member.updateOne(
                 {"_id": memberId},
@@ -112,38 +112,6 @@ const MemberController = {
 
     uploadAvatar: async (req, res) => {
         try {
-            const { memberId } = req.params;
-            const { avatar } = fs.readFileSync(req.file.path);
-            const encode_image = img.toString('base64');
-
-            const memberFound = await Member.findById(memberId)
-
-            if (!memberFound) {
-                return res.status(01).json({msg: 'Member not found'})
-            }
-
-            if(!avatar) return res.status(404).json({msg: "Avatar image is require."})
-
-            const updateMember = await Member.updateOne(
-                {"_id": memberId},
-                {$set: {avatar: avatar}},
-                {upsert: true}
-            )
-
-            const result = await Member.findById(memberId)
-
-            return res.json({
-                msg: "Success!",
-                member: {
-                    _id: result._id,
-                    username: result.username,
-                    avatar: result.avatar,
-                    coverImage: result.coverImage,
-                    status: result.status,
-                    role: result.role,
-                    createdAt: result.createdAt
-                }
-            })
 
         } catch (err) {
             console.error(err);
