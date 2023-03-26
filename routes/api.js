@@ -3,7 +3,6 @@ const verifyToken = require('../middleware/authorization');
 const AuthenticationController = require('../controllers/AuthenticationController');
 const MemberController = require('../controllers/MemberController');
 const UserController = require('../controllers/UserController');
-const ParamsValidations = require('../middleware/ParamsValidation');
 
 //Auth
 router.post('/register',AuthenticationController.register);
@@ -29,9 +28,30 @@ router.put(
     '/member/:memberId/change-password',
     verifyToken,
     MemberController.changePassword
+<<<<<<< Updated upstream
     )
     
 //User
 router.get('/user/get-profile', verifyToken, UserController.getProfile);
+=======
+    );
+router.put(
+    '/member/:memberId/update-profile',
+    verifyToken,
+    MemberController.updateProfile
+    );
+    
+//User
+router.get(
+    '/user/get-profile', 
+    verifyToken, 
+    UserController.getProfile
+    );
+router.put(
+    '/user/:userId/update-profile',
+    verifyToken,
+    UserController.updateProfile
+    );
+>>>>>>> Stashed changes
 
 module.exports = router

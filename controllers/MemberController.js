@@ -69,6 +69,45 @@ const MemberController = {
             console.error(err);
             return res.status(403);
         }
+    },
+
+    updateProfile: async (req, res) => {
+        try {
+            const { memberId } = req.params;
+            const { memberNameUpdate } = req.body
+
+            const memberFound = await Member.findById(memberId)
+
+            if (!memberFound) {
+                return res.status(01).json({msg: 'Member not found'})
+            }
+
+            if(!memberNameUpdate) return res.status(404).json({msg: "Username is require."})
+
+            const updateMember = await Member.updateOne(
+                {"_id": memberId},
+                {$set: {username: memberNameUpdate}},
+                {upsert: true}
+            )
+
+            const result = await Member.findById(memberId)
+
+            return res.json({
+                msg: "Success!",
+                member: {
+                    _id: result._id,
+                    username: result.username,
+                    avatar: result.avatar,
+                    coverImage: result.coverImage,
+                    status: result.status,
+                    role: result.role,
+                    createdAt: result.createdAt
+                }
+            })
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
     }
 }
 
