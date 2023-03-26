@@ -1,8 +1,9 @@
 const router = require('express').Router();
-const verifyToken = require('../middleware/authorization');
+const { verifyToken, checkAdmin, checkMember } = require('../middleware/authorization');
 const AuthenticationController = require('../controllers/AuthenticationController');
 const MemberController = require('../controllers/MemberController');
 const UserController = require('../controllers/UserController');
+const GroupController = require('../controllers/GroupController');
 
 //Auth
 router.post('/register',AuthenticationController.register);
@@ -34,12 +35,17 @@ router.put(
     verifyToken,
     MemberController.updateProfile
     );
-router.put(
-    '/member/:memberId/upload-avatar',
+// router.put(
+//     '/member/:memberId/upload-avatar',
+//     verifyToken,
+//     MemberController.uploadAvatar
+//     );
+router.post(
+    '/member/create-group',
     verifyToken,
-    MemberController.uploadAvatar
+    checkMember,
+    GroupController.createGroup
     );
-router.post('/member/create-group')
     
 
 //User

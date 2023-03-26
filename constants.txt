@@ -13,3 +13,4 @@ login first - 12
 Authorization forbidden - 13
 Required member permission - 14
 Required admin permission - 15
+Group already exists - 16

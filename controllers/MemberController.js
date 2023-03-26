@@ -109,15 +109,6 @@ const MemberController = {
             return res.status(403);
         }
     },
-
-    uploadAvatar: async (req, res) => {
-        try {
-
-        } catch (err) {
-            console.error(err);
-            return res.status(403);
-        }
-    }
 }
 
 module.exports = MemberController
