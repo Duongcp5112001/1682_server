@@ -1,31 +1,23 @@
-const GROUP_COLLECTION_NAME = require('./Group')
-
 const mongoose = require('mongoose')
 
-const MEMBER_COLLECTION_NAME = "member";
+const USER_COLLECTION_NAME = "user";
 
-const MEMBER_STATUS = {
+const USER_STATUS = {
     ACTIVE: "ACTIVE",
     INACTIVE: "INACTIVE",
 }
 
-const MEMBER_ROLE = {
-    MEMBER: "MEMBER",
-    ADMIN: "ADMIN",
-    
+const USER_ROLE = {
+    USER: "USER",
 }
 
-const memberSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     username: {
         type: String,
         required: true,
         trim: true,
         maxLength: 30,
         unique: true
-    },
-    password: {
-        type: String,
-        required: true,
     },
     avatar: {
         type: String,
@@ -37,9 +29,9 @@ const memberSchema = new mongoose.Schema({
         default: "",
     },
     status: {
-        type: MEMBER_STATUS,
+        type: USER_STATUS,
         required: true,
-        default: MEMBER_STATUS.ACTIVE,
+        default: USER_STATUS.ACTIVE,
     },
     codeExpires: {
         type: Date,
@@ -47,9 +39,9 @@ const memberSchema = new mongoose.Schema({
         default: new Date(),
     },
     role: {
-        type: MEMBER_ROLE,
+        type: USER_ROLE,
         required: true,
-        default: MEMBER_ROLE.MEMBER,
+        default: USER_ROLE.USER,
     },
     createdAt: {
         type: Date,
@@ -68,4 +60,4 @@ const memberSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model(MEMBER_COLLECTION_NAME, memberSchema)
+module.exports = mongoose.model(USER_COLLECTION_NAME, userSchema)

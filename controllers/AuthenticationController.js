@@ -1,6 +1,8 @@
 const Member = require('../models/Member')
+const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+
 
 const AuthenticationController = {
     register: async (req, res) => {
@@ -8,7 +10,8 @@ const AuthenticationController = {
             const { username, password } = req.body
 
             const member_name = await Member.findOne({username})
-            if(member_name) return res.status(400).json({msg: "This user name already exists."})
+            const user_name = await User.findOne({username})
+            if(member_name || user_name) return res.status(400).json({msg: "This user name already exists."})
 
             if(password.length < 8)
             return res.status(400).json({msg: "Password must be at least 8 characters."})
@@ -36,6 +39,40 @@ const AuthenticationController = {
                 member: {
                     ...newMember._doc,
                     password:'',
+                }
+            })
+        } catch (error) {
+            return res.status(500).json({msg: error.message});
+        }
+    },
+    registerNonPassword: async (req, res) => {
+        try {
+            const { username } = req.body
+
+            const member_name = await Member.findOne({username})
+            const user_name = await User.findOne({username})
+            if(user_name || member_name) return res.status(400).json({msg: "This username already exists."})
+
+            const newUser = new User({
+                username,
+            })
+
+            const access_token = createAccessToken({id: newUser._id})
+            const refresh_token = createRefreshToken({id: newUser._id}) 
+            
+            res.cookie('refreshtoken', refresh_token, {
+                httpOnly: true,
+                path: '/api/refresh_token',
+                maxAge: 30*24*60*60*1000 
+            })
+
+            await newUser.save()
+
+            res.json({
+                msg: "Register Success!",
+                access_token,
+                user: {
+                    ...newUser._doc,
                 }
             })
         } catch (error) {
@@ -70,6 +107,35 @@ const AuthenticationController = {
                 member: {
                     ...member._doc,
                     password:'',
+                }
+            })
+        } catch (error) {
+            return res.status(500).json({msg: error.message});
+        }
+    },
+    loginNonPassword: async (req, res) => {
+        try {
+            const { username } = req.body
+  
+            if(!username) return res.status(404).json({msg: "Username is require."})
+            const user = await User.findOne({username})
+            if (!user) return res.status(404).json({msg: "This username dose not exist."})
+
+
+            const access_token = createAccessToken({id: user._id})
+            const refresh_token = createRefreshToken({id: user._id}) 
+            
+            res.cookie('refreshtoken', refresh_token, {
+                httpOnly: true,
+                path: '/api/refresh_token',
+                maxAge: 30*24*60*60*1000 
+            })
+
+            res.json({
+                msg: "Login Success!",
+                access_token,
+                user: {
+                    ...user._doc,
                 }
             })
         } catch (error) {
