@@ -24,14 +24,18 @@ router.get(
     '/member/get-profile', 
     verifyToken, 
     MemberController.getProfile
-);
+    );
 router.put(
     '/member/:memberId/change-password',
     verifyToken,
     MemberController.changePassword
-    )
+    );
     
 //User
-router.get('/user/get-profile', verifyToken, UserController.getProfile);
+router.get(
+    '/user/get-profile', 
+    verifyToken, 
+    UserController.getProfile
+    );
 
 module.exports = router
