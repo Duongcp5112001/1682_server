@@ -1,6 +1,6 @@
 require("dotenv").config({ path: `.env` });
 const express = require('express')
-const AuthenticationRouter = require('./routes/AuthenticationRouter')
+const Api = require('./routes/api')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
@@ -12,7 +12,7 @@ app.use(cookieParser())
 
 
 //Router
-app.use('/api', AuthenticationRouter)
+app.use('/api', Api)
 
 //Connect DB
 const URL = process.env.MONGODB_URL
