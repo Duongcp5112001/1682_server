@@ -39,7 +39,7 @@ const UserController = {
                 return res.status(01).json({msg: 'User not found'})
             }
 
-            if(!userNameUpdate) return res.status(404).json({msg: "Username is require."})
+            if(!userNameUpdate) return res.status(02).json({msg: "Username is require."})
 
             const updateUser = await User.updateOne(
                 {"_id": userId},

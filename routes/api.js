@@ -3,7 +3,6 @@ const verifyToken = require('../middleware/authorization');
 const AuthenticationController = require('../controllers/AuthenticationController');
 const MemberController = require('../controllers/MemberController');
 const UserController = require('../controllers/UserController');
-const upload = require('../middleware/upload')
 
 //Auth
 router.post('/register',AuthenticationController.register);
@@ -38,10 +37,11 @@ router.put(
 router.put(
     '/member/:memberId/upload-avatar',
     verifyToken,
-    upload.single('avatar'),
     MemberController.uploadAvatar
     );
+router.post('/member/create-group')
     
+
 //User
 router.get(
     '/user/get-profile', 

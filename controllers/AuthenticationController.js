@@ -11,10 +11,10 @@ const AuthenticationController = {
 
             const member_name = await Member.findOne({username})
             const user_name = await User.findOne({username})
-            if(member_name || user_name) return res.status(400).json({msg: "This username already exists."})
+            if(member_name || user_name) return res.status(07).json({msg: "This username already exists."})
 
             if(password.length < 8)
-            return res.status(400).json({msg: "Password must be at least 8 characters."})
+            return res.status(08).json({msg: "Password must be at least 8 characters."})
 
             const passwordHass = await bcrypt.hash(password,12)
 
@@ -51,7 +51,7 @@ const AuthenticationController = {
 
             const member_name = await Member.findOne({username})
             const user_name = await User.findOne({username})
-            if(user_name || member_name) return res.status(400).json({msg: "This username already exists."})
+            if(user_name || member_name) return res.status(07).json({msg: "This username already exists."})
 
             const newUser = new User({
                 username,
@@ -83,13 +83,13 @@ const AuthenticationController = {
         try {
             const { username, password } = req.body
   
-            if(!username) return res.status(404).json({msg: "Username is require."})
+            if(!username) return res.status(02).json({msg: "Username is require."})
             const member = await Member.findOne({username}).populate("-password")
-            if (!member) return res.status(404).json({msg: "This username dose not exist."})
+            if (!member) return res.status(09).json({msg: "This username dose not exist."})
 
-            if(!password) return res.status(404).json({msg: "Password is require."})
+            if(!password) return res.status(10).json({msg: "Password is require."})
             const comparePassword = await bcrypt.compare(password, member.password)
-            if (!comparePassword) return res.status(404).json({msg: "Password is incorrect"})
+            if (!comparePassword) return res.status(11).json({msg: "Password is incorrect"})
 
 
             const access_token = createAccessToken({id: member._id})
@@ -117,9 +117,9 @@ const AuthenticationController = {
         try {
             const { username } = req.body
   
-            if(!username) return res.status(404).json({msg: "Username is require."})
+            if(!username) return res.status(02).json({msg: "Username is require."})
             const user = await User.findOne({username})
-            if (!user) return res.status(404).json({msg: "This username dose not exist."})
+            if (!user) return res.status(09).json({msg: "This username dose not exist."})
 
 
             const access_token = createAccessToken({id: user._id})
@@ -156,7 +156,7 @@ const AuthenticationController = {
             if(!ref_token) return res.status(404).json({msg: "Please login first."})
             
             jwt.verify(ref_token, process.env.RANDOM_REFRESH_TOKEN, async (err, result) => {
-               if(err) return res.status(404).json({msg: "Please login first."})
+               if(err) return res.status(12).json({msg: "Please login first."})
                console.log(result)
             })
             res.json({ref_token})
