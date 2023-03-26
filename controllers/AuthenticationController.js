@@ -11,7 +11,7 @@ const AuthenticationController = {
 
             const member_name = await Member.findOne({username})
             const user_name = await User.findOne({username})
-            if(member_name || user_name) return res.status(400).json({msg: "This user name already exists."})
+            if(member_name || user_name) return res.status(400).json({msg: "This username already exists."})
 
             if(password.length < 8)
             return res.status(400).json({msg: "Password must be at least 8 characters."})
@@ -83,9 +83,9 @@ const AuthenticationController = {
         try {
             const { username, password } = req.body
   
-            if(!username) return res.status(404).json({msg: "Email is require."})
+            if(!username) return res.status(404).json({msg: "Username is require."})
             const member = await Member.findOne({username}).populate("-password")
-            if (!member) return res.status(404).json({msg: "This email dose not exist."})
+            if (!member) return res.status(404).json({msg: "This username dose not exist."})
 
             if(!password) return res.status(404).json({msg: "Password is require."})
             const comparePassword = await bcrypt.compare(password, member.password)

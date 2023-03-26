@@ -108,6 +108,47 @@ const MemberController = {
             console.error(err);
             return res.status(403);
         }
+    },
+
+    uploadAvatar: async (req, res) => {
+        try {
+            const { memberId } = req.params;
+            const { avatar } = fs.readFileSync(req.file.path);
+            const encode_image = img.toString('base64');
+
+            const memberFound = await Member.findById(memberId)
+
+            if (!memberFound) {
+                return res.status(01).json({msg: 'Member not found'})
+            }
+
+            if(!avatar) return res.status(404).json({msg: "Avatar image is require."})
+
+            const updateMember = await Member.updateOne(
+                {"_id": memberId},
+                {$set: {avatar: avatar}},
+                {upsert: true}
+            )
+
+            const result = await Member.findById(memberId)
+
+            return res.json({
+                msg: "Success!",
+                member: {
+                    _id: result._id,
+                    username: result.username,
+                    avatar: result.avatar,
+                    coverImage: result.coverImage,
+                    status: result.status,
+                    role: result.role,
+                    createdAt: result.createdAt
+                }
+            })
+
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
     }
 }
 

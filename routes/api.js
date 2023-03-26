@@ -3,6 +3,7 @@ const verifyToken = require('../middleware/authorization');
 const AuthenticationController = require('../controllers/AuthenticationController');
 const MemberController = require('../controllers/MemberController');
 const UserController = require('../controllers/UserController');
+const upload = require('../middleware/upload')
 
 //Auth
 router.post('/register',AuthenticationController.register);
@@ -34,6 +35,12 @@ router.put(
     verifyToken,
     MemberController.updateProfile
     );
+router.put(
+    '/member/:memberId/upload-avatar',
+    verifyToken,
+    upload.single('avatar'),
+    MemberController.uploadAvatar
+    );
     
 //User
 router.get(
@@ -45,6 +52,11 @@ router.put(
     '/user/:userId/update-profile',
     verifyToken,
     UserController.updateProfile
+    );
+router.put(
+    '/user/:userId/upload-avatar',
+    verifyToken,
+    
     );
 
 module.exports = router
