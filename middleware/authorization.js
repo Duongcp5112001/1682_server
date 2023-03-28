@@ -13,7 +13,7 @@ async function verifyToken(req, res, NextFunction) {
     NextFunction();
   } catch (err) {
     console.error(err);
-    return res.status(13).json({msg: 'Authorization forbidden'});
+    return res.status(403).json({errorCode: "13", msg: 'Authorization forbidden'});
   }
 }
 
@@ -24,17 +24,24 @@ async function checkMember(req, res, NextFunction) {
 
   try {
     const decode = jwt.verify(token, process.env.RANDOM_TOKEN_SECRET);
+<<<<<<< Updated upstream
     req.decodedId = decode.id;
     const member = await Member.findOne(decodedId);
     if (member.role === MEMBER_ROLE.MEMBER) {
+=======
+    const decodedId = decode.id;
+
+    const member = await Member.findById(decodedId);
+    if (member.role === "MEMBER" || member.role === "ADMIN") {
+>>>>>>> Stashed changes
       NextFunction();
     } else {
-      return res.status(14).json({msg: "Required member permission"});
+      return res.status(403).json({errorCode: "14", msg: "Required member permission"});
     }
     
   } catch (err) {
     console.error(err);
-    return res.status(13).json({msg: 'Authorization forbidden'});
+    return res.status(403).json({errorCode: "13", msg: 'Authorization forbidden'});
   }
 }
 
@@ -50,12 +57,12 @@ async function checkAdmin(req, res, NextFunction) {
     if (admin.role === MEMBER_ROLE.ADMIN) {
       NextFunction();
     } else {
-      return res.status(14).json({msg: "Required admin permission"});
+      return res.status(403).json({errorCode: "15", msg: "Required admin permission"});
     }
     
   } catch (err) {
     console.error(err);
-    return res.status(13).json({msg: 'Authorization forbidden'});
+    return res.status(403).json({errorCode: "13", msg: 'Authorization forbidden'});
   }
 }
 

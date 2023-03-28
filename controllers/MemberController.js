@@ -8,9 +8,8 @@ const MemberController = {
             const memberId = req.decodedId;
             const memberFound = await Member.findById(memberId);
             if (!memberFound) {
-                return res.status(03).json({msg: 'Member not found'})
+                return res.status(404).json({ errorCode: "03", msg: 'Account not found'})
             }
-
             return res.json({
                 msg: "Success!",
                 member: {
@@ -37,13 +36,13 @@ const MemberController = {
             const memberFound = await Member.findById(memberId)
 
             if (!memberFound) {
-                return res.status(03).json({msg: 'Member not found'})
+                return res.status(404).json({errorCode: "03", msg: 'Account not found'})
             }
 
-            if(!oldPassword) return res.status(04).json({msg: "Old password is require."})
-            if(!newPassword) return res.status(05).json({msg: "New password is require."})
+            if(!oldPassword) return res.status(404).json({errorCode: "04", msg: "Old password is require."})
+            if(!newPassword) return res.status(404).json({errorCode: "05", msg: "New password is require."})
             const comparePassword = await bcrypt.compare(oldPassword, memberFound.password);
-            if (!comparePassword) return res.status(06).json({msg: "Old password is not correct"})
+            if (!comparePassword) return res.status(403).json({errorCode: "06", msg: "Password not compare"})
 
             const password = await bcrypt.hash(newPassword, 10);
 
@@ -73,22 +72,58 @@ const MemberController = {
 
     updateProfile: async (req, res) => {
         try {
-            const { memberId } = req.params;
-            const { memberNameUpdate } = req.body
+            const { accountId } = req.params;
+            const { accountNameUpdate } = req.body
 
-            const memberFound = await Member.findById(memberId)
+            const memberFound = await Member.findById(accountId)
+
+            console.log(accountId)
 
             if (!memberFound) {
-                return res.status(03).json({msg: 'Member not found'})
+                return res.status(404).json({errorCode: "03", msg: 'Member not found'})
             }
 
-            if(!memberNameUpdate) return res.status(02).json({msg: "Username is require."})
+            if(!accountNameUpdate) return res.status(403).json({errorCode: "02", msg: "Username is require."})
 
             const updateMember = await Member.updateOne(
-                {"_id": memberId},
-                {$set: {username: memberNameUpdate}},
+                {"_id": accountId},
+                {$set: {username: accountNameUpdate}},
                 {upsert: true}
             )
+
+            const result = await Member.findById(accountId)
+
+            return res.json({
+                msg: "Success!",
+                member: {
+                    _id: result._id,
+                    username: result.username,
+                    avatar: result.avatar,
+                    coverImage: result.coverImage,
+                    status: result.status,
+                    role: result.role,
+                    createdAt: result.createdAt
+                }
+            })
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
+    },
+
+    deactiveAcount: async (req, res) => {
+        try { 
+            const { memberId } = req.params;
+            const memberFound = await Member.findById(memberId)
+            if (memberFound.status === "ACTIVE") {
+                const updateMember = await Member.updateOne(
+                    {"_id": memberId},
+                    {$set: {status: "INACTIVE"}},
+                    {upsert: true}
+                )
+            } else {
+                return res.status(403).json({errorCode: "17", msg: "This account is already deactive"})
+            }
 
             const result = await Member.findById(memberId)
 
@@ -110,9 +145,57 @@ const MemberController = {
         }
     },
 
+<<<<<<< Updated upstream
     uploadAvatar: async (req, res) => {
         try {
 
+=======
+    activeAccount: async (req, res) => {
+        try { 
+            const { memberId } = req.params;
+            const memberFound = await Member.findById(memberId)
+        
+            if (memberFound.status === "INACTIVE") {
+                const updateMember = await Member.updateOne(
+                    {"_id": memberId},
+                    {$set: {status: "ACTIVE"}},
+                    {upsert: true}
+                )
+            } else {
+                return res.status(403).json({errorCode: "18", msg: "This account is already active"})
+            }
+
+            const result = await Member.findById(memberId)
+
+            return res.json({
+                msg: "Success!",
+                member: {
+                    _id: result._id,
+                    username: result.username,
+                    avatar: result.avatar,
+                    coverImage: result.coverImage,
+                    status: result.status,
+                    role: result.role,
+                    createdAt: result.createdAt
+                }
+            })
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
+    },
+
+    getListMembers: async (req, res) => {
+        try {
+            const members = await Member.find()
+            if (members.length === 0) {
+              return res.status(400).json({ errorCode: "21", message: "List members are empty" });
+            };
+            return res.json({
+                msg: "Success!", 
+                data: members 
+            });
+>>>>>>> Stashed changes
         } catch (err) {
             console.error(err);
             return res.status(403);

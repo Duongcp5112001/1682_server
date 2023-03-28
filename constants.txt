@@ -12,4 +12,15 @@ Password is incorrect - 11
 login first - 12
 Authorization forbidden - 13
 Required member permission - 14
+<<<<<<< Updated upstream
 Required admin permission - 15
+=======
+Required admin permission - 15
+Group already exists - 16
+already deactive account - 17
+already active account - 18
+already deactive group - 19
+already active group - 20
+empty list member - 21
+group not found - 22
+>>>>>>> Stashed changes

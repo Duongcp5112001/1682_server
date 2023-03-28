@@ -1,5 +1,4 @@
 const Member = require('../models/Member')
-const User = require('../models/User')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -11,10 +10,10 @@ const AuthenticationController = {
 
             const member_name = await Member.findOne({username})
             const user_name = await User.findOne({username})
-            if(member_name || user_name) return res.status(07).json({msg: "This username already exists."})
+            if(member_name || user_name) return res.status(404).json({errorCode: "07" ,msg: "This username already exists."})
 
-            if(password.length < 8)
-            return res.status(08).json({msg: "Password must be at least 8 characters."})
+            if(password.length < 8 && password.length > 0)
+            return res.status(403).json({errorCode: "08", msg: "Password must be at least 8 characters."})
 
             const passwordHass = await bcrypt.hash(password,12)
 
@@ -50,11 +49,11 @@ const AuthenticationController = {
             const { username } = req.body
 
             const member_name = await Member.findOne({username})
-            const user_name = await User.findOne({username})
-            if(user_name || member_name) return res.status(07).json({msg: "This username already exists."})
+            
+            if(member_name) return res.status(404).json({errorCode: "07", msg: "This username already exists."})
 
-            const newUser = new User({
-                username,
+            const newUser = new Member({
+                username, role: "USER"
             })
 
             const access_token = createAccessToken({id: newUser._id})
@@ -83,13 +82,13 @@ const AuthenticationController = {
         try {
             const { username, password } = req.body
   
-            if(!username) return res.status(02).json({msg: "Username is require."})
+            if(!username) return res.status(404).json({errorCode: "02", msg: "Username is require."})
             const member = await Member.findOne({username}).populate("-password")
-            if (!member) return res.status(09).json({msg: "This username dose not exist."})
+            if (!member) return res.status(404).json({errorCode: "01", msg: "This username dose not exist."})
 
-            if(!password) return res.status(10).json({msg: "Password is require."})
+            if(!password) return res.status(404).json({errorCode: "10", msg: "Password is require."})
             const comparePassword = await bcrypt.compare(password, member.password)
-            if (!comparePassword) return res.status(11).json({msg: "Password is incorrect"})
+            if (!comparePassword) return res.status(404).json({errorCode: "11", msg: "Password is incorrect"})
 
 
             const access_token = createAccessToken({id: member._id})
@@ -117,9 +116,9 @@ const AuthenticationController = {
         try {
             const { username } = req.body
   
-            if(!username) return res.status(02).json({msg: "Username is require."})
-            const user = await User.findOne({username})
-            if (!user) return res.status(09).json({msg: "This username dose not exist."})
+            if(!username) return res.status(404).json({errorCode: "02", msg: "Username is require."})
+            const user = await Member.findOne({username})
+            if (!user) return res.status(404).json({errorCode: "09", msg: "This username dose not exist."})
 
 
             const access_token = createAccessToken({id: user._id})
@@ -153,10 +152,10 @@ const AuthenticationController = {
     generateAccessToken: async (req, res) => {
         try {
             const ref_token = req.cookies.refreshtoken
-            if(!ref_token) return res.status(404).json({msg: "Please login first."})
+            if(!ref_token) return res.status(403).json({ errorCode: "12", msg: "Please login first."})
             
             jwt.verify(ref_token, process.env.RANDOM_REFRESH_TOKEN, async (err, result) => {
-               if(err) return res.status(12).json({msg: "Please login first."})
+               if(err) return res.status(403).json({errorCode: "12", msg: "Please login first."})
                console.log(result)
             })
             res.json({ref_token})

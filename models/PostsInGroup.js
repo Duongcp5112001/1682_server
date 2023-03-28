@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const POSTS_COLLECTION_NAME = "posts"
+const POSTS_COLLECTION_NAME = "group_posts"
 
 const postsSchema = new mongoose.Schema({
       title: {
