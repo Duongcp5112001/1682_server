@@ -14,7 +14,7 @@ async function verifyToken(req, res, NextFunction) {
     NextFunction();
   } catch (err) {
     console.error(err);
-    return res.status(13).json({msg: 'Authorization forbidden'});
+    return res.status(403).json({errorCode: "13", msg: 'Authorization forbidden'});
   }
 }
 
@@ -28,15 +28,15 @@ async function checkMember(req, res, NextFunction) {
     const decodedId = decode.id;
 
     const member = await Member.findById(decodedId);
-    if (member.role === "MEMBER") {
+    if (member.role === "MEMBER" || member.role === "ADMIN") {
       NextFunction();
     } else {
-      return res.status(14).json({msg: "Required member permission"});
+      return res.status(403).json({errorCode: "14", msg: "Required member permission"});
     }
     
   } catch (err) {
     console.error(err);
-    return res.status(13).json({msg: 'Authorization forbidden'});
+    return res.status(403).json({errorCode: "13", msg: 'Authorization forbidden'});
   }
 }
 
@@ -52,12 +52,12 @@ async function checkAdmin(req, res, NextFunction) {
     if (admin.role === "ADMIN") {
       NextFunction();
     } else {
-      return res.status(14).json({msg: "Required admin permission"});
+      return res.status(403).json({errorCode: "15", msg: "Required admin permission"});
     }
     
   } catch (err) {
     console.error(err);
-    return res.status(13).json({msg: 'Authorization forbidden'});
+    return res.status(403).json({errorCode: "13", msg: 'Authorization forbidden'});
   }
 }
 

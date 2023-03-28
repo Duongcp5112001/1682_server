@@ -1,5 +1,3 @@
-const GROUP_COLLECTION_NAME = require('./Group')
-
 const mongoose = require('mongoose')
 
 const MEMBER_COLLECTION_NAME = "member";
@@ -12,7 +10,7 @@ const MEMBER_STATUS = {
 const MEMBER_ROLE = {
     MEMBER: "MEMBER",
     ADMIN: "ADMIN",
-    
+    USER: "USER"
 }
 
 const memberSchema = new mongoose.Schema({
@@ -25,7 +23,7 @@ const memberSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        required: false,
     },
     avatar: {
         type: String,
