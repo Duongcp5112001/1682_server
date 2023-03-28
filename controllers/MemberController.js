@@ -145,11 +145,6 @@ const MemberController = {
         }
     },
 
-<<<<<<< Updated upstream
-    uploadAvatar: async (req, res) => {
-        try {
-
-=======
     activeAccount: async (req, res) => {
         try { 
             const { memberId } = req.params;
@@ -195,7 +190,6 @@ const MemberController = {
                 msg: "Success!", 
                 data: members 
             });
->>>>>>> Stashed changes
         } catch (err) {
             console.error(err);
             return res.status(403);

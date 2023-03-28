@@ -1,13 +1,9 @@
 const router = require('express').Router();
-const verifyToken = require('../middleware/authorization');
+const { verifyToken, checkAdmin, checkMember } = require('../middleware/authorization');
 const AuthenticationController = require('../controllers/AuthenticationController');
 const MemberController = require('../controllers/MemberController');
-<<<<<<< Updated upstream
-const UserController = require('../controllers/UserController');
-=======
 const GroupController = require('../controllers/GroupController');
 const PostsController = require('../controllers/PostsController');
->>>>>>> Stashed changes
 
 //Auth
 router.post(
@@ -59,22 +55,13 @@ router.put(
     verifyToken,
     MemberController.updateProfile
     );
-<<<<<<< Updated upstream
-router.put(
-    '/member/:memberId/upload-avatar',
-=======
 
 router.post(
     '/member/create-group',
->>>>>>> Stashed changes
     verifyToken,
-    MemberController.uploadAvatar
+    checkMember,
+    GroupController.createGroup
     );
-<<<<<<< Updated upstream
-router.post('/member/create-group')
-    
-=======
->>>>>>> Stashed changes
 
 router.post(
     '/member/create-posts',
