@@ -33,7 +33,6 @@ async function checkMember(req, res, NextFunction) {
     } else {
       return res.status(403).json({errorCode: "14", msg: "Required member permission"});
     }
-    
   } catch (err) {
     console.error(err);
     return res.status(403).json({errorCode: "13", msg: 'Authorization forbidden'});
