@@ -22,5 +22,7 @@ empty list member - 21
 group not found - 22
 posts not found - 23
 do not permission to delete comment - 24
+do not permission to delete posts - 25
+do not permission to delete posts in group - 26
 
 

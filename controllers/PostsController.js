@@ -26,6 +26,33 @@ const PostsController = {
         }
     },
 
+    deletePosts: async (req, res) => {
+        try {
+            const updateBy = req.decodedId;
+            const { postsId } = req.params;
+
+            const postsFound = await Posts.findById(postsId);
+
+            if (!postsFound) {
+                return res.status(404).json({ errorCode: "23", msg: 'Posts not found'})
+            }
+
+            if (updateBy === String(postsFound.updatedBy)) {
+                const updateData = await Posts.findByIdAndDelete(postsId);
+            } else {
+                return res.status(404).json({ errorCode: "25", msg: 'You do not hae permission to delete the posts'})
+            };
+
+            res.json({
+                msg: "Delete posts Success!",
+            });
+            
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
+    },
+
     createPostsInGroup: async (req, res) => {
         try {
             const { groupId } = req.params;
@@ -46,6 +73,38 @@ const PostsController = {
                     ...newPosts._doc,
                 }
             })
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
+    },
+
+    deleteGroupPosts: async (req, res) => {
+        try {
+            const updateBy = req.decodedId;
+            const { postsId, groupId } = req.params;
+
+            const postsFound = await Posts.findById(postsId);
+            const groupFound = await Group.findById(groupId);
+
+            if (!postsFound) {
+                return res.status(404).json({ errorCode: "23", msg: 'Posts not found'})
+            }
+
+            if (!groupFound) {
+                return res.status(404).json({ errorCode: "22", msg: 'Group not found'})
+            }
+
+            if (updateBy === String(postsFound.updatedBy) && groupId === postsFound.inGroup) {
+                const updateData = await Posts.findByIdAndDelete(postsId);
+            } else {
+                return res.status(404).json({ errorCode: "26", msg: 'You do not hae permission to delete the posts'})
+            };
+
+            res.json({
+                msg: "Delete posts Success!",
+            });
+            
         } catch (err) {
             console.error(err);
             return res.status(403);
@@ -289,7 +348,7 @@ const PostsController = {
                     { new: true, useFindAndModify: false }
                 );
             } else {
-                return res.status(404).json({ errorCode: "24", msg: 'You do not hae permission to delete the posts'})
+                return res.status(404).json({ errorCode: "24", msg: 'You do not hae permission to delete the comment'})
             };
 
             const result = await Posts.findById(postsId);

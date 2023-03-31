@@ -106,6 +106,18 @@ router.delete(
     verifyToken,
     PostsController.deleteCommentPosts
     );
+
+router.delete(
+    '/posts/:postsId/delete',
+    verifyToken,
+    PostsController.deletePosts
+    );
+
+router.delete(
+    '/posts/:postsId/group/:groupId/delete',
+    verifyToken,
+    PostsController.deleteGroupPosts
+    );
     
 //User
 router.get(
