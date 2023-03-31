@@ -76,6 +76,30 @@ router.post(
     checkMember,
     PostsController.createPostsInGroup 
     );
+
+router.put(
+    '/posts/:postsId/like-dislike/:action',
+    verifyToken,
+    PostsController.likeDislikePosts
+    );
+
+router.put(
+    '/posts/:postsId/view-posts',
+    verifyToken,
+    PostsController.viewPosts
+    );
+
+router.put(
+    '/posts/:postsId/comment-posts',
+    verifyToken,
+    PostsController.commentPosts
+    );
+
+router.delete(
+    '/posts/:postsId/comment/:commentId/delete',
+    verifyToken,
+    PostsController.deleteCommentPosts
+    );
     
 //User
 router.get(
