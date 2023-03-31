@@ -70,6 +70,12 @@ router.post(
     PostsController.createPosts 
     );
 
+router.put(
+    '/posts/:postsId/like-dislike/:action',
+    verifyToken,
+    PostsController.likeDislikePosts
+);
+
 router.post(
     '/member/:groupId/create-posts',
     verifyToken,

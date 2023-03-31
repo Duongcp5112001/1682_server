@@ -1,10 +1,8 @@
 const Posts = require('../models/Posts');
 const Group = require('../models/Group');
-<<<<<<< Updated upstream
-=======
 const mongoose = require('mongoose');
 const Member = require('../models/Member');
->>>>>>> Stashed changes
+
 
 const PostsController = {
     createPosts: async (req, res) => {
@@ -53,8 +51,6 @@ const PostsController = {
             return res.status(403);
         }
     },
-<<<<<<< Updated upstream
-=======
 
     likeDislikePosts: async (req, res) => {
         try {
@@ -66,7 +62,7 @@ const PostsController = {
             if (!postsFound) {
                 return res.status(404).json({ errorCode: "23", msg: 'Posts not found'})
             }
-
+            
             const { like, dislike } = postsFound;
 
             let update = {};
@@ -309,9 +305,6 @@ const PostsController = {
             return res.status(403);
         }
     },
-
-    
->>>>>>> Stashed changes
 }
 
 module.exports = PostsController

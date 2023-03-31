@@ -20,9 +20,7 @@ already deactive group - 19
 already active group - 20
 empty list member - 21
 group not found - 22
-<<<<<<< Updated upstream
-=======
 posts not found - 23
-do not permission to delete posts - 24
->>>>>>> Stashed changes
+do not permission to delete comment - 24
+
 
