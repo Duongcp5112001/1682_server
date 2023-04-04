@@ -118,6 +118,24 @@ router.delete(
     verifyToken,
     PostsController.deleteGroupPosts
     );
+
+router.put(
+    '/posts/:postsId/comment/:commentId/edit',
+    verifyToken,
+    PostsController.editComment
+    );
+
+router.put(
+    '/group/:groupId/edit',
+    verifyToken,
+    GroupController.editGroup
+    );
+
+router.put(
+    '/group/:groupId/member/:memberId/accept-join-request',
+    verifyToken,
+    GroupController.acceptMemberJoin
+    );
     
 //User
 router.get(

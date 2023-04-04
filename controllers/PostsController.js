@@ -283,7 +283,7 @@ const PostsController = {
                 {
                     $push: {
                         comments: {
-                            content,
+                            content: content,
                             createdAt: new Date(),
                             createdBy: mongoose.Types.ObjectId(updateBy),
                             editHistory: [],
@@ -348,7 +348,7 @@ const PostsController = {
                     { new: true, useFindAndModify: false }
                 );
             } else {
-                return res.status(404).json({ errorCode: "24", msg: 'You do not hae permission to delete the comment'})
+                return res.status(404).json({ errorCode: "24", msg: 'You do not have permission to delete the comment'})
             };
 
             const result = await Posts.findById(postsId);
@@ -364,6 +364,80 @@ const PostsController = {
             return res.status(403);
         }
     },
+
+    editComment: async (req, res) => {
+        try {
+            const { postsId, commentId } = req.params;
+            const memberId = req.decodedId;
+            const {content} = req.body;
+
+            const postsFound = await Posts.findById(postsId);
+            
+            const commentFound = postsFound.comments.filter((cmt) => {
+                if (String(cmt._id) === commentId) {
+                    const cmtId = cmt._id;
+                    return cmtId;
+                }
+            });
+
+            const dataMember = commentFound.map(data => data.createdBy)
+
+            const memberFound = await Member.findById(memberId);
+
+            if (!postsFound) {
+                return res.status(404).json({ errorCode: "23", msg: 'Posts not found'})
+            }
+            if (!commentFound) {
+                return res.status(404).json({ errorCode: "24", msg: 'Posts comment not found'})
+            }
+            if (!memberFound) {
+                return res.status(404).json({ errorCode: "03", msg: 'Member not found'})
+            }
+
+            const history = {
+                content: content,
+                updatedAt: new Date(),
+            }
+
+            if (memberId === String(dataMember)) {
+                const updateData = await Posts.findOneAndUpdate(
+                    {
+                        _id: mongoose.Types.ObjectId(postsId),
+                        comments: {
+                            $elemMatch: {
+                                _id: mongoose.Types.ObjectId(commentId),
+                            },
+                        },
+                    },
+                    {
+                      $set: {
+                        "comments.$.content": content,
+                        "comments.$.createdAt": new Date(),
+                      },
+                      $push: {
+                        "comments.$.editHistory": history,
+                        $position: 0,
+                      },
+                    },
+                    { new: true, useFindAndModify: false }
+                );
+            } else {
+                return res.status(404).json({ errorCode: "27", msg: 'You do not have permission to edit the comment'})
+            };
+
+            const result = await Posts.findById(postsId);
+
+            res.json({
+                msg: "Success!",
+                posts: {
+                    ...result._doc,
+                }
+            });
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
+    }
 }
 
 module.exports = PostsController
