@@ -1,6 +1,7 @@
 const Member = require('../models/Member')
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 
 const MemberController = {
     getProfile: async (req, res) => {
@@ -190,6 +191,72 @@ const MemberController = {
                 msg: "Success!", 
                 data: members 
             });
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
+    },
+
+    acceptAddFriend: async (req, res) => {
+        try {
+            const memberId1 = req.decodedId;
+            const { memberId } = req.params;
+
+            const member1 = await Member.findById(memberId1);
+            const memberFriend = member1.friends.filter((data) => {
+                if (String(data.friendId) === String(memberId)) {
+                    return data.friendId
+                }
+            });
+            console.log("1 -" + member1);
+
+            const member2 = await Member.findById(memberId);
+            const memberFriend1 = member2.friends.filter((data) => {
+                if (String(data.friendId) === String(memberId1)) {
+                    return data.friendId
+                }
+            });
+            console.log("2 -" + member2);
+
+            if (memberFriend.length > 0 || memberFriend1.length > 0) {
+                return res.status(404).json({ errorCode: "33", msg: 'Member already in friend list' });
+            } else {
+                const updateMember = await Member.findByIdAndUpdate(
+                    memberId,
+                    {
+                        $push: {
+                            friends: {
+                                friendId: mongoose.Types.ObjectId(memberId1),
+                                createdAt: new Date(),
+                            }
+                        }
+                    },
+                    { new: true, useFindAndModify: false }
+                );
+    
+                const updateMember1 = await Member.findByIdAndUpdate(
+                    memberId1,
+                    {
+                        $push: {
+                            friends: {
+                                friendId: mongoose.Types.ObjectId(memberId),
+                                createdAt: new Date(),
+                            }
+                        }
+                    },
+                    { new: true, useFindAndModify: false }
+                );
+            }
+
+            const result = await Member.findById(memberId1);
+
+            return res.json({
+                msg: "Success!", 
+                data: {
+                    result,
+                } 
+            });
+
         } catch (err) {
             console.error(err);
             return res.status(403);

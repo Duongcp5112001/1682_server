@@ -4,25 +4,30 @@ const mongoose = require('mongoose');
 
 const GroupController = {
     createGroup: async (req, res) => {
-        const updateBy = req.decodedId;
-        const { name, description } = req.body;
-
-        const group = await Group.findOne({name});
-
-        if(group) {
-            return res.status(403).json({errorCode: "17", msg: 'Group already exists'})
-        }
-
-        const newGroup = new Group({name, description, updatedBy: updateBy});
-
-        await newGroup.save();
-
-        res.json({
-            msg: "Create group Success!",
-            member: {
-                ...newGroup._doc,
+        try {
+            const updateBy = req.decodedId;
+            const { name, description } = req.body;
+    
+            const group = await Group.findOne({name});
+    
+            if(group) {
+                return res.status(403).json({errorCode: "17", msg: 'Group already exists'})
             }
-        })
+    
+            const newGroup = new Group({name, description, updatedBy: updateBy});
+    
+            await newGroup.save();
+    
+            res.json({
+                msg: "Create group Success!",
+                member: {
+                    ...newGroup._doc,
+                }
+            })
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
     },
 
     deactiveGroup: async (req, res) => {
@@ -170,7 +175,18 @@ const GroupController = {
                 }
             });
 
-            console.log(memberInGroup)
+            const updateMember = await Member.findByIdAndUpdate(
+                memberId,
+                {
+                    $push:{
+                        groups: {
+                            groupId: mongoose.Types.ObjectId(groupId),
+                            createdAt: new Date(),
+                        }
+                    }
+                },
+                { new: true, useFindAndModify: false }
+            )
 
             if (memberInGroup.length > 0) {
                 return res.status(404).json({ errorCode: "31", msg: 'Member already in group' });
