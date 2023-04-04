@@ -116,6 +116,7 @@ router.delete(
 router.delete(
     '/posts/:postsId/group/:groupId/delete',
     verifyToken,
+    checkMember,
     PostsController.deleteGroupPosts
     );
 
@@ -128,6 +129,7 @@ router.put(
 router.put(
     '/group/:groupId/edit',
     verifyToken,
+    checkMember,
     GroupController.editGroup
     );
 
@@ -135,6 +137,12 @@ router.put(
     '/group/:groupId/member/:memberId/accept-join-request',
     verifyToken,
     GroupController.acceptMemberJoin
+    );
+
+router.put(
+    '/member/:memberId/accept-add-friend-request',
+    verifyToken,
+    MemberController.acceptAddFriend
     );
     
 //User
@@ -192,6 +200,8 @@ router.get(
     checkAdmin,
     GroupController.getListGroups
     );
+
+router
 
 
 module.exports = router

@@ -29,4 +29,6 @@ do not permission to delete edit in group - 28
 do not permission to edit group - 29
 do not permission to accept member join the group - 30
 member already in group - 31
+feedback type already exists - 32
+member already in friend list - 33
 

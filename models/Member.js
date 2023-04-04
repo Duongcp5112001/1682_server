@@ -49,6 +49,30 @@ const memberSchema = new mongoose.Schema({
         required: true,
         default: MEMBER_ROLE.MEMBER,
     },
+    friends: {
+        type: [
+            {
+                friendId: {
+                    type: mongoose.Types.ObjectId,
+                    ref: 'member'
+                },
+                createdAt: Date,
+            }
+        ],
+        default: [],
+    },
+    groups: {
+        type: [
+            {
+                groupId: {
+                    type: mongoose.Types.ObjectId,
+                    ref: "group"
+                },
+                createdAt: Date,
+            }
+        ],
+        default: [],
+    },
     createdAt: {
         type: Date,
         required: true,

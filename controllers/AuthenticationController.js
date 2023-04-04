@@ -9,8 +9,7 @@ const AuthenticationController = {
             const { username, password } = req.body
 
             const member_name = await Member.findOne({username})
-            const user_name = await User.findOne({username})
-            if(member_name || user_name) return res.status(404).json({errorCode: "07" ,msg: "This username already exists."})
+            if(member_name) return res.status(404).json({errorCode: "07" ,msg: "This username already exists."})
 
             if(password.length < 8 && password.length > 0)
             return res.status(403).json({errorCode: "08", msg: "Password must be at least 8 characters."})

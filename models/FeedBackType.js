@@ -1,13 +1,7 @@
 const mongoose = require('mongoose')
 
-const feedBackSchema = new mongoose.Schema({
+const feedBackTypeSchema = new mongoose.Schema({
     title: {
-        type: String,
-        require: true,
-        default: "",
-    },
-
-    description: {
         type: String,
         require: true,
         default: "",
@@ -34,4 +28,4 @@ const feedBackSchema = new mongoose.Schema({
     timestamps: true
 })
 
-module.exports = mongoose.model('feedBack', feedBackSchema)
+module.exports = mongoose.model('feedBackType', feedBackTypeSchema)
