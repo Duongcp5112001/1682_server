@@ -1,4 +1,6 @@
 const Group = require('../models/Group');
+const Member = require('../models/Member');
+const mongoose = require('mongoose');
 
 const GroupController = {
     createGroup: async (req, res) => {
@@ -107,6 +109,103 @@ const GroupController = {
             return res.status(403);
         }
     },
+
+    editGroup: async (req, res) => {
+        try {
+            const memberId = req.decodedId;
+            const { name, description, avatar, coverImage } = req.body;
+            const { groupId } = req.params;
+
+            const groupFound = await Group.findById(groupId);
+
+            if (String(groupFound.updatedBy) === String(memberId)) {
+                const updateData = await Group.findOneAndUpdate(
+                    groupId,
+                    {
+                      $set: {
+                        name: name,
+                        description: description,
+                        avatar: avatar,
+                        coverImage: coverImage
+                      },
+                    },
+                    { new: true, useFindAndModify: false }
+                );
+            } else {
+                return res.status(404).json({ errorCode: "29", msg: 'You do not have permission to edit the group'})
+            };
+
+            const result = await Group.findById(groupId);
+
+            res.json({
+                msg: "Success!",
+                posts: {
+                    ...result._doc,
+                }
+            });
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
+    },
+
+    acceptMemberJoin: async (req, res) => {
+        try {
+            const ownerId = req.decodedId;
+            const { memberId, groupId } = req.params;
+            
+            const groupFound = await Group.findById(groupId);
+            const memberFound = await Member.findById(memberId);
+
+            if (!groupFound) {
+                return res.status(404).json({ errorCode: "21", msg: 'Group not found' });
+            }
+            if (!memberFound) {
+                return res.status(404).json({ errorCode: "03", msg: 'Member not found' });
+            }
+
+            const memberInGroup = groupFound.members.filter((data) => {
+                if (String(data.memberGroup) === String(memberId)) {
+                    return data.memberGroup
+                }
+            });
+
+            console.log(memberInGroup)
+
+            if (memberInGroup.length > 0) {
+                return res.status(404).json({ errorCode: "31", msg: 'Member already in group' });
+            } else {
+                if (ownerId === String(groupFound.updatedBy)) {
+                    const updateData = await Group.findByIdAndUpdate(
+                        groupId,
+                        {
+                            $push: {
+                                members: {
+                                    memberGroup: mongoose.Types.ObjectId(memberId),
+                                    createdAt: new Date(),
+                                },
+                            },
+                        },
+                        { new: true, useFindAndModify: false }
+                    );
+                } else {
+                    return res.status(404).json({ errorCode: "30", msg: 'You do not have permission to accept member join the group'})
+                };
+            }
+
+            const result = await Group.findById(groupId);
+
+            res.json({
+                msg: "Success!",
+                posts: {
+                    ...result._doc,
+                }
+            });
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
+    }
 }
 
 module.exports = GroupController

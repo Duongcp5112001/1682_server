@@ -24,5 +24,9 @@ posts not found - 23
 do not permission to delete comment - 24
 do not permission to delete posts - 25
 do not permission to delete posts in group - 26
-
+do not permission to edit posts - 27
+do not permission to delete edit in group - 28
+do not permission to edit group - 29
+do not permission to accept member join the group - 30
+member already in group - 31
 

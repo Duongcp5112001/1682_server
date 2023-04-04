@@ -66,7 +66,6 @@ const postsSchema = new mongoose.Schema({
             {
               content: String,
               updatedAt: Date,
-              createdAt: Date,
             },
           ],
           default: [],
@@ -98,7 +97,10 @@ const postsSchema = new mongoose.Schema({
   subscribers: {
     type: [
       {
-        user: { type: mongoose.Types.ObjectId, ref: "member" },
+        user: { 
+          type: mongoose.Types.ObjectId, 
+          ref: "member" 
+        },
         createdAt: Date,
       },
     ],

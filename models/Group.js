@@ -38,6 +38,19 @@ const groupSchema = new mongoose.Schema({
         default: GROUP_STATUS.ACTIVE,
     },
 
+    members: {
+        type: [
+            {
+                memberGroup: {
+                    type: mongoose.Types.ObjectId,
+                    ref: "member"
+                },
+                createdAt: Date,
+            },
+        ],
+        default: [],
+    },
+
     createdAt: {
         type: Date,
         required: true,
