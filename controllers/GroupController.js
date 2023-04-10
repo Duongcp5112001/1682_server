@@ -115,6 +115,34 @@ const GroupController = {
         }
     },
 
+    getByName: async (req, res) => {
+        try {
+            const {groupName} = req.body;
+            
+            const result = await Group.findOne({ name: groupName });
+
+            if (!result) {
+                return res.status(404).json({ errorCode: "22", msg: 'Group not found'})
+            } 
+
+            return res.json({
+                msg: "Success!",
+                member: {
+                    _id: result._id,
+                    name: result.name,
+                    description: result.description,
+                    avatar: result.avatar,
+                    coverImage: result.coverImage,
+                    status: result.status,
+                }
+            })
+
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
+    },
+
     editGroup: async (req, res) => {
         try {
             const memberId = req.decodedId;
