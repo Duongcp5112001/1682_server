@@ -29,6 +29,37 @@ const MemberController = {
         }
     },
 
+    getByName: async (req, res) => {
+        try {
+            const {memberName} = req.body;
+            
+            const result = await Member.findOne({ username: memberName });
+
+            console.log(result)
+
+            if (!result) {
+                return res.status(404).json({ errorCode: "03", msg: 'Member not found'})
+            } 
+
+            return res.json({
+                msg: "Success!",
+                member: {
+                    _id: result._id,
+                    username: result.username,
+                    avatar: result.avatar,
+                    coverImage: result.coverImage,
+                    status: result.status,
+                    friends: result.friends,
+                    groups: result.groups
+                }
+            })
+
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
+    },
+
     changePassword: async (req, res) => {
         try {
             const { memberId } = req.params;

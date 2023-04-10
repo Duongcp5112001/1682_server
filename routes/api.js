@@ -144,6 +144,16 @@ router.put(
     verifyToken,
     MemberController.acceptAddFriend
     );
+
+router.get(
+    '/group/search-group',
+    GroupController.getByName
+    );
+
+router.get(
+    '/member/search-member',
+    MemberController.getByName
+    );
     
 //User
 router.get(
