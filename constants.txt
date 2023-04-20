@@ -31,4 +31,6 @@ do not permission to accept member join the group - 30
 member already in group - 31
 feedback type already exists - 32
 member already in friend list - 33
+account is not active - 34
+password is not match - 35
 
