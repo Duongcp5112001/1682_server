@@ -6,13 +6,14 @@ const jwt = require('jsonwebtoken')
 const AuthenticationController = {
     register: async (req, res) => {
         try {
-            const { username, password } = req.body
+            const { username, password, reenterPassword } = req.body
 
             const member_name = await Member.findOne({username})
             if(member_name) return res.status(404).json({errorCode: "07" ,msg: "This username already exists."})
 
-            if(password.length < 8 && password.length > 0)
-            return res.status(403).json({errorCode: "08", msg: "Password must be at least 8 characters."})
+            if(password.length < 8 && password.length > 0) return res.status(403).json({errorCode: "08", msg: "Password must be at least 8 characters."})
+
+            if(password !== reenterPassword) return res.status(403).json({errorCode: "35", msg: "Password is not match."})
 
             const passwordHass = await bcrypt.hash(password,12)
 
@@ -84,6 +85,9 @@ const AuthenticationController = {
             if(!username) return res.status(404).json({errorCode: "02", msg: "Username is require."})
             const member = await Member.findOne({username}).populate("-password")
             if (!member) return res.status(404).json({errorCode: "01", msg: "This username dose not exist."})
+            if (member.status !== 'ACTIVE') {
+                res.status(404).json({errorCode: "34", msg: "Account is not active"})
+            }
 
             if(!password) return res.status(404).json({errorCode: "10", msg: "Password is require."})
             const comparePassword = await bcrypt.compare(password, member.password)
