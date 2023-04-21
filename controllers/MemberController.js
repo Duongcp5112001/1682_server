@@ -301,10 +301,12 @@ const MemberController = {
                 return res.status(403).json({errorCode: "03", msg: "Member not found"})
             }
 
+            const data = member.friends
+
             return res.json({
                 msg: "Success!",
                 data: {
-                    member.friends
+                    data
                 }
             })
         } catch (err) {
@@ -322,10 +324,12 @@ const MemberController = {
                 return res.status(403).json({errorCode: "03", msg: "Member not found"})
             }
 
+            const data = member.groups
+
             return res.json({
                 msg: "Success!",
                 data: {
-                    member.groups
+                    data
                 }
             })
         } catch (err) {
