@@ -239,7 +239,6 @@ const MemberController = {
                     return data.friendId
                 }
             });
-            console.log("1 -" + member1);
 
             const member2 = await Member.findById(memberId);
             const memberFriend1 = member2.friends.filter((data) => {
@@ -247,7 +246,6 @@ const MemberController = {
                     return data.friendId
                 }
             });
-            console.log("2 -" + member2);
 
             if (memberFriend.length > 0 || memberFriend1.length > 0) {
                 return res.status(404).json({ errorCode: "33", msg: 'Member already in friend list' });
@@ -288,6 +286,48 @@ const MemberController = {
                 } 
             });
 
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
+    }
+
+    getMemberFriend: async (res, req) => {
+        try {
+            const memberId = req.decodedId;
+            const member = await Member.findById(memberId);
+
+            if (!member) {
+                return res.status(403).json({errorCode: "03", msg: "Member not found"})
+            }
+
+            return res.json({
+                msg: "Success!",
+                data: {
+                    member.friends
+                }
+            })
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
+    }
+
+    getMemberGroup: async (res, req) => {
+        try {
+            const memberId = req.decodedId;
+            const member = await Member.findById(memberId);
+
+            if (!member) {
+                return res.status(403).json({errorCode: "03", msg: "Member not found"})
+            }
+
+            return res.json({
+                msg: "Success!",
+                data: {
+                    member.groups
+                }
+            })
         } catch (err) {
             console.error(err);
             return res.status(403);

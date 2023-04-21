@@ -154,6 +154,18 @@ router.get(
     '/member/search-member',
     MemberController.getByName
     );
+
+router.get(
+    '/member/get-friend-list',
+    verifyToken,
+    MemberController.getMemberFriend
+    );
+
+router.get(
+    '/member/get-group-list',
+    verifyToken,
+    MemberController.getMemberGroup
+)
     
 //User
 router.get(
@@ -210,8 +222,5 @@ router.get(
     checkAdmin,
     GroupController.getListGroups
     );
-
-router
-
 
 module.exports = router
