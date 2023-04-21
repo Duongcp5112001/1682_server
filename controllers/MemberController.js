@@ -290,7 +290,7 @@ const MemberController = {
             console.error(err);
             return res.status(403);
         }
-    }
+    },
 
     getMemberFriend: async (res, req) => {
         try {
@@ -311,7 +311,7 @@ const MemberController = {
             console.error(err);
             return res.status(403);
         }
-    }
+    },
 
     getMemberGroup: async (res, req) => {
         try {
