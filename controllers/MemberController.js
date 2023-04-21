@@ -292,7 +292,7 @@ const MemberController = {
         }
     },
 
-    getMemberFriend: async (res, req) => {
+    getMemberFriend: async (req, res) => {
         try {
             const memberId = req.decodedId;
             const member = await Member.findById(memberId);
@@ -315,7 +315,7 @@ const MemberController = {
         }
     },
 
-    getMemberGroup: async (res, req) => {
+    getMemberGroup: async (req, res) => {
         try {
             const memberId = req.decodedId;
             const member = await Member.findById(memberId);
