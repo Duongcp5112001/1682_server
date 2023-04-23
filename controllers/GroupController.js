@@ -83,7 +83,7 @@ const GroupController = {
 
             return res.json({
                 msg: "Success!",
-                member: {
+                group: {
                     _id: result._id,
                     name: result.username,
                     description: result.description,
@@ -91,6 +91,29 @@ const GroupController = {
                     coverImage: result.coverImage,
                     status: result.status,
                     createdAt: result.createdAt
+                }
+            })
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
+    },
+
+    getGroupById: async (req, res) => {
+        try { 
+            const { groupId } = req.params;
+            const groupFound = await Group.findById(groupId)
+
+            return res.json({
+                msg: "Success!",
+                group: {
+                    _id: groupFound._id,
+                    name: groupFound.username,
+                    description: groupFound.description,
+                    avatar: groupFound.avatar,
+                    coverImage: groupFound.coverImage,
+                    status: groupFound.status,
+                    createdAt: groupFound.createdAt
                 }
             })
         } catch (err) {
