@@ -20,7 +20,8 @@ const MemberController = {
                     coverImage: memberFound.coverImage,
                     status: memberFound.status,
                     role: memberFound.role,
-                    createdAt: memberFound.createdAt
+                    createdAt: memberFound.createdAt,
+                    
                 }
             })
         } catch (err) {
