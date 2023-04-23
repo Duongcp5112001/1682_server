@@ -38,11 +38,11 @@ router.post(
 
 
 //Member
-router.get(
-    '/member/get-group-by-id',
-    verifyToken,
-    GroupController.get
-    );
+// router.get(
+//     '/member/get-group-by-id',
+//     verifyToken,
+//     GroupController.get
+//     );
 
 router.get(
     '/member/get-profile', 
