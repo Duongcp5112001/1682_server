@@ -27,12 +27,12 @@ const memberSchema = new mongoose.Schema({
     },
     avatar: {
         type: String,
-        default: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fdamri.edu.vn%2Fuser-avatar%2F&psig=AOvVaw3Mz-Iw-CT-g77yO_Di9DMC&ust=1682336932369000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCNihwcz3v_4CFQAAAAAdAAAAABAJ",
+        default: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/User-avatar.svg/2048px-User-avatar.svg.png",
     },
     coverImage: {
         type: String,
         require: false,
-        default: "https://www.google.com/url?sa=i&url=http%3A%2F%2Ficonerecife.com.br%2Fwp-content%2Fplugins%2Fuix-page-builder%2Fuixpb_templates%2Fimages%2FUixPageBuilderTmpl%2F&psig=AOvVaw1vFK7jzGWeeWS4rhcZ8Ia9&ust=1682336817072000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCKDL_ZX3v_4CFQAAAAAdAAAAABAE",
+        default: "https://images.squarespace-cdn.com/content/v1/5e7a98dcdadcc26735b5c134/1648600351459-HKB1L1FISP2SQAKAUSFP/Orange+Flower+Cross+2.png?format=2500w",
     },
     status: {
         type: MEMBER_STATUS,
