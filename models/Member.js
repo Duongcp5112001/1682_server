@@ -27,12 +27,12 @@ const memberSchema = new mongoose.Schema({
     },
     avatar: {
         type: String,
-        default: "",
+        default: "https://www.google.com/url?sa=i&url=https%3A%2F%2Fdamri.edu.vn%2Fuser-avatar%2F&psig=AOvVaw3Mz-Iw-CT-g77yO_Di9DMC&ust=1682336932369000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCNihwcz3v_4CFQAAAAAdAAAAABAJ",
     },
     coverImage: {
         type: String,
         require: false,
-        default: "",
+        default: "https://www.google.com/url?sa=i&url=http%3A%2F%2Ficonerecife.com.br%2Fwp-content%2Fplugins%2Fuix-page-builder%2Fuixpb_templates%2Fimages%2FUixPageBuilderTmpl%2F&psig=AOvVaw1vFK7jzGWeeWS4rhcZ8Ia9&ust=1682336817072000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCKDL_ZX3v_4CFQAAAAAdAAAAABAE",
     },
     status: {
         type: MEMBER_STATUS,
