@@ -351,17 +351,12 @@ const MemberController = {
                 return res.status(403).json({errorCode: "03", msg: "Member not found"})
             }
 
-            const data = member.groups.groupId
-
-            for (const group of data) {
-                const arrayData = []
-                const dataFinal = arrayData.push(group.groupId)
-            }
+            const data = member.groups
 
             return res.json({
                 msg: "Success!",
                 data: {
-                    dataFinal
+                    data
                 }
             })
         } catch (err) {
