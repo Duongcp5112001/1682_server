@@ -167,13 +167,13 @@ router.get(
     MemberController.getMemberFriend
     );
 
-router.post(
+router.get(
     '/member/get-group-list',
     verifyToken,
     MemberController.getMemberGroup
     );
 
-router.get(
+router.post(
     '/member/get-group-by-id',
     verifyToken,
     GroupController.getGroupById1
