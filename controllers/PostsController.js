@@ -372,6 +372,10 @@ const PostsController = {
             const {content} = req.body;
 
             const postsFound = await Posts.findById(postsId);
+
+            if (!postsFound) {
+                return res.status(404).json({ errorCode: "23", msg: 'Posts not found'})
+            }
             
             const commentFound = postsFound.comments.filter((cmt) => {
                 if (String(cmt._id) === commentId) {
@@ -431,6 +435,35 @@ const PostsController = {
                 msg: "Success!",
                 posts: {
                     ...result._doc,
+                }
+            });
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
+    },
+
+    findPostByMemberId: async (req, res) => {
+        try {
+            const memberId = req.decodedId
+            const postsFound = await Post.filter((data) => data.updatedBy === memberId)
+
+            if (!postsFound) {
+                return res.status(404).json({ errorCode: "23", msg: 'Posts not found'})
+            }
+
+            res.json({
+                msg: "Success!",
+                posts: {
+                    _id: postsFound._id,
+                    title: postsFound.title,
+                    description: postsFound.description,
+                    like: postsFound.like,
+                    dislike: postsFound.dislike,
+                    views: postsFound.views,
+                    comments: postsFound.comments,
+                    inGroup: postsFound.inGroup,
+                    subscribers: postsFound.subscribers
                 }
             });
         } catch (err) {

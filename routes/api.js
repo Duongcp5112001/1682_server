@@ -184,6 +184,17 @@ router.post(
     verifyToken,
     MemberController.getMemberById
     );
+
+router.get(
+    '/profile/:memberId',
+    MemberController.getMemberById1
+    );
+
+router.post(
+    '/member/:memberId',
+    verifyToken,
+    PostsController.findPostByMemberId
+    );
     
 //User
 router.get(
