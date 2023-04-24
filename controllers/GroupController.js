@@ -104,6 +104,10 @@ const GroupController = {
             const { groupId } = req.params;
             const groupFound = await Group.findById(groupId)
 
+            if (!groupFound) {
+                return res.status(404).json({ errorCode: "22", msg: 'Group not found'})
+            }
+
             return res.json({
                 msg: "Success!",
                 group: {
@@ -124,11 +128,13 @@ const GroupController = {
 
     getGroupById1: async (req, res) => {
         try { 
-            const { groupId } = req.body;
-            const groupFound = await Group.findById(groupId)
+            const groupId = req.body;
+            const groupFound = await Group.findById({groupId})
+
             if (!groupFound) {
                 return res.status(404).json({ errorCode: "22", msg: 'Group not found'})
             }
+            
             return res.json({
                 msg: "Success!",
                 group: {
