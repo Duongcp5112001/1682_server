@@ -128,7 +128,7 @@ const GroupController = {
 
     getGroupById1: async (req, res) => {
         try { 
-            const { groupId } = req.body;
+            const groupId = req.body;
             const groupFound = await Group.findById(groupId)
 
             if (!groupFound) {
