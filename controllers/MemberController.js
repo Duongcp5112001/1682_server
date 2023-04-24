@@ -355,9 +355,9 @@ const MemberController = {
 
             return res.json({
                 msg: "Success!",
-                data: [
+                data: {
                     data
-                ]
+                }
             })
         } catch (err) {
             console.error(err);
