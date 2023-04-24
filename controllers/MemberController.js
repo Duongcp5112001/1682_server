@@ -4,6 +4,33 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 
 const MemberController = {
+    getMemberById: async (req, res) => {
+         try {
+            const memberId = req.body;
+            const memberFound = await Member.findById(memberId);
+            if (!memberFound) {
+                return res.status(404).json({ errorCode: "03", msg: 'Account not found'})
+            }
+            return res.json({
+                msg: "Success!",
+                member: {
+                    _id: memberFound._id,
+                    username: memberFound.username,
+                    avatar: memberFound.avatar,
+                    coverImage: memberFound.coverImage,
+                    status: memberFound.status,
+                    role: memberFound.role,
+                    createdAt: memberFound.createdAt,
+                    friends: memberFound.friends,
+                    groups: memberFound.groups
+                }
+            })
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
+    },
+
     getProfile: async (req, res) => {
         try {
             const memberId = req.decodedId;
@@ -21,7 +48,8 @@ const MemberController = {
                     status: memberFound.status,
                     role: memberFound.role,
                     createdAt: memberFound.createdAt,
-                    
+                    friends: memberFound.friends,
+                    groups: memberFound.groups
                 }
             })
         } catch (err) {
@@ -35,8 +63,6 @@ const MemberController = {
             const {memberName} = req.body;
             
             const result = await Member.findOne({ username: memberName });
-
-            console.log(result)
 
             if (!result) {
                 return res.status(404).json({ errorCode: "03", msg: 'Member not found'})
@@ -325,7 +351,7 @@ const MemberController = {
                 return res.status(403).json({errorCode: "03", msg: "Member not found"})
             }
 
-            const data = member.groups
+            const data = member.groups.groupId
 
             return res.json({
                 msg: "Success!",

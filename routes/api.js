@@ -171,7 +171,13 @@ router.get(
     '/member/get-group-list',
     verifyToken,
     MemberController.getMemberGroup
-)
+    );
+
+router.get(
+    '/member/get-group-by-id',
+    verifyToken,
+    GroupController.getGroupById1
+    );
     
 //User
 router.get(

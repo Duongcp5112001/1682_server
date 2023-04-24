@@ -122,6 +122,29 @@ const GroupController = {
         }
     },
 
+    getGroupById1: async (req, res) => {
+        try { 
+            const { groupId } = req.body;
+            const groupFound = await Group.findById(groupId)
+
+            return res.json({
+                msg: "Success!",
+                group: {
+                    _id: groupFound._id,
+                    name: groupFound.username,
+                    description: groupFound.description,
+                    avatar: groupFound.avatar,
+                    coverImage: groupFound.coverImage,
+                    status: groupFound.status,
+                    createdAt: groupFound.createdAt
+                }
+            })
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
+    },
+
     getListGroups: async (req, res) => {
         try {
             const groups = await Group.find()
