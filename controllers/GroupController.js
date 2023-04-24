@@ -139,7 +139,7 @@ const GroupController = {
                 msg: "Success!",
                 group: {
                     _id: groupFound._id,
-                    name: groupFound.username,
+                    name: groupFound.name,
                     description: groupFound.description,
                     avatar: groupFound.avatar,
                     coverImage: groupFound.coverImage,
