@@ -173,7 +173,7 @@ router.get(
     MemberController.getMemberGroup
     );
 
-router.get(
+router.post(
     '/member/get-group-by-id',
     verifyToken,
     GroupController.getGroupById1
