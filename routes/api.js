@@ -167,7 +167,7 @@ router.get(
     MemberController.getMemberFriend
     );
 
-router.get(
+router.post(
     '/member/get-group-list',
     verifyToken,
     MemberController.getMemberGroup
