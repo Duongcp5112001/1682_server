@@ -178,6 +178,12 @@ router.post(
     verifyToken,
     GroupController.getGroupById1
     );
+
+router.post(
+    '/member/get-member-by-id',
+    verifyToken,
+    MemberController.getMemberById
+    );
     
 //User
 router.get(

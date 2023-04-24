@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const MemberController = {
     getMemberById: async (req, res) => {
          try {
-            const memberId = req.body;
+            const { memberId } = req.body;
             const memberFound = await Member.findById(memberId);
             if (!memberFound) {
                 return res.status(404).json({ errorCode: "03", msg: 'Account not found'})
@@ -30,6 +30,35 @@ const MemberController = {
             return res.status(403);
         }
     },
+
+    getMemberById1: async (req, res) => {
+        try {
+           const { memberId } = req.params;
+           const memberFound = await Member.findById(memberId);
+
+           if (!memberFound) {
+               return res.status(404).json({ errorCode: "03", msg: 'Account not found'})
+           }
+           
+           return res.json({
+               msg: "Success!",
+               member: {
+                   _id: memberFound._id,
+                   username: memberFound.username,
+                   avatar: memberFound.avatar,
+                   coverImage: memberFound.coverImage,
+                   status: memberFound.status,
+                   role: memberFound.role,
+                   createdAt: memberFound.createdAt,
+                   friends: memberFound.friends,
+                   groups: memberFound.groups
+               }
+           })
+       } catch (err) {
+           console.error(err);
+           return res.status(403);
+       }
+   },
 
     getProfile: async (req, res) => {
         try {
