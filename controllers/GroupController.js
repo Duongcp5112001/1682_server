@@ -126,7 +126,9 @@ const GroupController = {
         try { 
             const { groupId } = req.body;
             const groupFound = await Group.findById(groupId)
-
+            if (!groupFound) {
+                return res.status(404).json({ errorCode: "22", msg: 'Group not found'})
+            }
             return res.json({
                 msg: "Success!",
                 group: {
