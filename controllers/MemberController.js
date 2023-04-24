@@ -351,7 +351,7 @@ const MemberController = {
                 return res.status(403).json({errorCode: "03", msg: "Member not found"})
             }
 
-            const data = member.groups.groupId
+            const data = member.groups
 
             return res.json({
                 msg: "Success!",
