@@ -353,10 +353,15 @@ const MemberController = {
 
             const data = member.groups.groupId
 
+            for (const group of data) {
+                const arrayData = []
+                const dataFinal = arrayData.push(group.groupId)
+            }
+
             return res.json({
                 msg: "Success!",
                 data: {
-                    data
+                    dataFinal
                 }
             })
         } catch (err) {
