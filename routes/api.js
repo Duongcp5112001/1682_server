@@ -76,6 +76,11 @@ router.post(
     PostsController.createPosts 
     );
 
+router.get(
+    '/member/get-posts',
+    PostsController.findPosts 
+    );
+
 router.put(
     '/posts/:postsId/like-dislike/:action',
     verifyToken,

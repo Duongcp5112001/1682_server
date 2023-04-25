@@ -470,6 +470,22 @@ const PostsController = {
             console.error(err);
             return res.status(403);
         }
+    },
+
+    findPosts: async (req, res) => {
+        try {
+            const posts = await Posts.find()
+            if (posts.length === 0) {
+              return res.status(400).json({ errorCode: "21", message: "List posts are empty" });
+            };
+            return res.json({
+                msg: "Success!", 
+                data: posts 
+            });
+        } catch (err) {
+            console.error(err);
+            return res.status(403);
+        }
     }
 }
 
