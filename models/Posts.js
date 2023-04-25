@@ -13,6 +13,11 @@ const postsSchema = new mongoose.Schema({
     required: true,
     default: "",
   },
+  image: {
+    type: String,
+    required: false,
+    default: "",
+  },
   like: {
     type: [
       {
