@@ -193,9 +193,8 @@ router.get(
     MemberController.getMemberById1
     );
 
-router.post(
-    '/member/:memberId',
-    verifyToken,
+router.get(
+    '/member/get-post-by-member-id',
     PostsController.findPostByMemberId
     );
     

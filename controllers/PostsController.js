@@ -445,7 +445,7 @@ const PostsController = {
 
     findPostByMemberId: async (req, res) => {
         try {
-            const memberId = req.decodedId
+            const { memberId } = req.body
             const postsFound = await Post.filter((data) => data.updatedBy === memberId)
 
             if (!postsFound) {
@@ -471,6 +471,35 @@ const PostsController = {
             return res.status(403);
         }
     },
+
+    // findPostByGroupId: async (req, res) => {
+    //     try {
+    //         const memberId = req.decodedId
+    //         const postsFound = await Post.filter((data) => data.updatedBy === memberId)
+
+    //         if (!postsFound) {
+    //             return res.status(404).json({ errorCode: "23", msg: 'Posts not found'})
+    //         }
+
+    //         res.json({
+    //             msg: "Success!",
+    //             posts: {
+    //                 _id: postsFound._id,
+    //                 title: postsFound.title,
+    //                 description: postsFound.description,
+    //                 like: postsFound.like,
+    //                 dislike: postsFound.dislike,
+    //                 views: postsFound.views,
+    //                 comments: postsFound.comments,
+    //                 inGroup: postsFound.inGroup,
+    //                 subscribers: postsFound.subscribers
+    //             }
+    //         });
+    //     } catch (err) {
+    //         console.error(err);
+    //         return res.status(403);
+    //     }
+    // },
 
     findPosts: async (req, res) => {
         try {
