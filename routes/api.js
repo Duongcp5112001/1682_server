@@ -72,7 +72,6 @@ router.post(
 router.post(
     '/member/create-posts',
     verifyToken,
-    checkMember,
     PostsController.createPosts 
     );
 
