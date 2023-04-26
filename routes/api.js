@@ -186,7 +186,6 @@ router.post(
 
 router.post(
     '/member/get-member-by-id',
-    verifyToken,
     MemberController.getMemberById
     );
 
