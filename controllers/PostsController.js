@@ -8,9 +8,9 @@ const PostsController = {
     createPosts: async (req, res) => {
         try {
             const updateBy = req.decodedId;
-            const { title, description, image } = req.body;
+            const { description, image } = req.body;
 
-            const newPosts = new Posts({title, description, image, updatedBy: updateBy});
+            const newPosts = new Posts({description, image, updatedBy: updateBy});
 
             await newPosts.save();
 

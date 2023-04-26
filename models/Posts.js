@@ -3,11 +3,6 @@ const mongoose = require('mongoose')
 const POSTS_COLLECTION_NAME = "posts"
 
 const postsSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-    default: "",
-  },
   description: {
     type: String,
     required: true,
