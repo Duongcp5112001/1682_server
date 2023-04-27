@@ -193,7 +193,7 @@ router.get(
     MemberController.getMemberById1
     );
 
-router.get(
+router.post(
     '/member/get-post-by-member-id',
     PostsController.findPostByMemberId
     );
