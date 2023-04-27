@@ -445,9 +445,10 @@ const PostsController = {
 
     findPostByMemberId: async (req, res) => {
         try {
-            const { memberId } = req.body
+            const memberId = req.body
             const postsFound = await Post.filter((data) => data.updatedBy === memberId)
 
+            console.log("postsFound: " + postsFound)
             if (!postsFound) {
                 return res.status(404).json({ errorCode: "23", msg: 'Posts not found'})
             }
